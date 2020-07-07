@@ -1,12 +1,66 @@
 package daos;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import beans.Transfer;
 
 public class TransferDAO {
+	
 	private Connection con;
 
 	public TransferDAO(Connection connection) {
 		this.con = connection;
+	}
+	
+	public List<Transfer> getTransfersByCAId (int idcurrentAccount) throws SQLException {
+		String query = "SELECT * FROM transfer WHERE CApayer = ? OR CApayee = ?";
+		try {
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, idcurrentAccount);
+			pstatement.setInt(2, idcurrentAccount);
+			ResultSet result = pstatement.executeQuery();
+			List<Transfer> returningList = new ArrayList<>();
+			while(result.next()) {
+				Transfer newTransfer = new Transfer();
+				newTransfer.setIdtransfer(result.getInt("idtransfer"));
+				newTransfer.setAmount(result.getInt("amount"));
+				newTransfer.setDate(result.getDate("date"));
+				newTransfer.setReason(result.getString("reason"));
+				newTransfer.setCApayer(result.getString("CApayer"));
+				newTransfer.setCApayee(result.getString("CApayee"));
+				returningList.add(newTransfer);
+			}
+			return returningList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException();
+		}
+	}
+	
+	public boolean newTransfer(int amount, String reason, String CApayer, String CApayee) throws SQLException{
+		String query = "INSERT INTO transfer (amount, reason, CApayer, CApayee) VALUES (?, ?, ?, ?)";
+		try {
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, amount);
+			pstatement.setString(2,  reason);
+			pstatement.setString(3,  CApayer);
+			pstatement.setString(4,  CApayee);
+			int flag = pstatement.executeUpdate();
+			if(flag == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException();
+		}
+		
 	}
 
 }
