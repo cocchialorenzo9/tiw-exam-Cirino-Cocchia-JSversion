@@ -1,32 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script src="/TIW-exam-JSversion/Scripts/homepage.js" charset="utf-8" defer></script>
+<link rel="stylesheet" type="text/css" href="/TIW-exam-JSversion/Styles/style.css">
 <meta charset="UTF-8">
 <title>Homepage</title>
 </head>
 <body>
 	<header>
-		<h1>Transfers site. Cirino, Cocchia exam</h1>
-	</header>
-	
-	<main>
-	<form id="loginForm">
-		<fieldset>
-			<input type="text" placeholder="Username"><br>
-			<input type="password" placeholder="password"><br>
-			<button id="loginButton">Login</button>
-		</fieldset>
-	</form>
-	</main>
-	
-	<footer>
-		<h5>If you are not registered yet, <a href="/Register">register now!</a></h5>
 		<div class="container">
-        	<h5>Contact us!</h5>
-       		<a href="mailto:10621933@polimi.it">Duilio Cirino</a>
-        	<a href="mailto:10623885@polimi.it">Lorenzo Cocchia</a>
-      	</div>
+			<h2>Transfers site. Cirino, Cocchia exam</h2>
+			<nav>
+				<h3> Welcome back <span id="personalMessage">Mockup</span>!</h3>
+				<a href="/TIW-exam-JSversion/Logout">Log out</a>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<div class="container">
+		<span id="generalError" class="error"></span>
+		<table id="CATable" hidden=true>
+			<tr>
+				<th>Current Account Code</th>
+				<th>Total check</th>
+			</tr>
+		</table>
+
+		<div class="details">
+			<span id="noTransfersMessage" hidden=true>No trasfer has been made by or to this account yet.</span>
+			<table id="transfersTable" border="1" hidden=true>
+				<tr>
+					<th>Date</th>
+					<th>Amount</th>
+					<th>Reason</th>
+					<th>Deal with</th>
+				</tr>
+			</table>
+
+
+		<form action="#" id="newTransferForm" hidden=true>
+			<fieldset>
+			<table>
+				<tr>
+					<td>Amount</td>
+					<td><input type="number" step="0.01" min="0.01" name="amount" required></td>
+				</tr>
+				<tr>
+					<td>Reason</td>
+					<td><input type="text" name="reason" required></td>
+				</tr>
+				<tr>
+					<td>User code payee:</td>
+					<td><input type="text" name="userCodePayee" pattern="\d{4}" maxlength=4 required></td>
+				</tr>
+				<tr>
+					<td>Current account code payee:</td>
+					<td><input type="text" name="CApayee" pattern="\d{4}" maxlength=4 required></td>
+				</tr>
+			</table>
+			<input type="hidden" name="CApayer" value="-1" required>
+			<button id="newTransferButton">Send request</button><br>
+			<span id="transferError" class="error"></span>
+			</fieldset>
+		</form>
+		</div>
+	</div>
+	</main>
+
+	<footer>
+		<div class="container">
+			<h5>If you are not registered yet, <a href="/TIW-exam-JSversion/Register">register now!</a></h5>
+    	<h5>Contact us!</h5>
+   		<a href="mailto:10621933@polimi.it">Duilio Cirino</a><br>
+    	<a href="mailto:10623885@polimi.it">Lorenzo Cocchia</a>
+  	</div>
 	</footer>
 </body>
 </html>

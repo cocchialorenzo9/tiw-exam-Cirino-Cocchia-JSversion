@@ -16,14 +16,16 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import com.google.gson.Gson;
 
+import beans.CurrentAccount;
 import beans.Transfer;
+import daos.CurrentAccountDAO;
 import daos.TransferDAO;
 import utils.ConnectionHandler;
 
 /**
  * Servlet implementation class GetCurrentAccount
  */
-@WebServlet("/GetCurrentAccount")
+@WebServlet("/GetAllTransfers")
 public class GetAllTransfers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -45,10 +47,12 @@ public class GetAllTransfers extends HttpServlet {
 		}
 		
 		TransferDAO transferDao = new TransferDAO(connection);
+		CurrentAccountDAO caDao = new CurrentAccountDAO(connection);
 		List<Transfer> allTransfers = new ArrayList<>();
 		
 		try {
-			allTransfers = transferDao.getTransfersByCAId(idCA);
+			CurrentAccount ca = caDao.getCAById(idCA);
+			allTransfers = transferDao.getTransfersByCACode(ca.getCAcode());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -16,12 +16,13 @@ public class ContactDAO {
 		this.con = connection;
 	}
 
-	public boolean newUsersContact(int iduser, String CAcodeContact) throws SQLException{
-		String query = "INSERT INTO contact (CAcode, iduser) VALUES (?, ?)";
+	public boolean newUsersContact(int iduser, String usercodeContact, String CAcodeContact) throws SQLException{
+		String query = "INSERT INTO contact (iduser, usercode, CAcode) VALUES (?, ?, ?)";
 		try {
 			PreparedStatement pstatement = con.prepareStatement(query);
-			pstatement.setString(1, CAcodeContact);
-			pstatement.setInt(2,  iduser);
+			pstatement.setInt(1, iduser);
+			pstatement.setString(2,  usercodeContact);
+			pstatement.setString(3, CAcodeContact);
 			int flag = pstatement.executeUpdate();
 			if(flag == 0) {
 				return false;
@@ -47,8 +48,9 @@ public class ContactDAO {
 			while(result.next()) {
 				Contact contact = new Contact();
 				contact.setIdContact(result.getInt("idcontact"));
-				contact.setCAcode(result.getString("CAcode"));
 				contact.setIduser(result.getInt("iduser"));
+				contact.setUsercode(result.getString("usercode"));
+				contact.setCAcode(result.getString("CAcode"));
 				allContacts.add(contact);
 			}
 			

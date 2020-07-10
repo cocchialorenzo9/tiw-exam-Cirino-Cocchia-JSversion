@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script src="Scripts/login.js" charset="utf-8" defer></script>
 <link rel="stylesheet" type="text/css" href="Styles/style.css">
 <meta charset="UTF-8">
 <title>Login</title>
 </head>
 <body>
 	<header>
-		<h1>Transfers site. Cirino, Cocchia exam</h1>
+		<div class="container">
+			<h1>Transfers site. Cirino, Cocchia exam</h1>
+		</div>
 	</header>
-	
+
 	<main>
-	<h5>Login with your credentials!</h5>	
-	<form id="loginForm">
-		<fieldset>
-			<input type="text" placeholder="Username" required><br>
-			<input type="password" placeholder="Password" required><br>
-			<button id="loginButton">Login</button>
-		</fieldset>
-	</form>
-	</main>
-	
-	<footer>
+	<div class="container">
+		<h3>Login with your credentials!</h3>
+		<form id="loginForm">
+			<fieldset>
+				<input type="text" name="username" placeholder="Username" required><br>
+				<input type="password" name="password" placeholder="Password" required><br>
+				<button id="loginButton">Login</button>
+				<span class="error" id="loginError" hidden=true></span>
+			</fieldset>
+		</form>
 		<h5>If you are not registered yet, <a href="Pages/register.html">register now!</a></h5>
+	</div>
+	</main>
+
+	<footer>
 		<div class="container">
         	<h5>Contact us!</h5>
-       		<a href="mailto:10621933@polimi.it">Duilio Cirino</a>
+       		<a href="mailto:10621933@polimi.it">Duilio Cirino</a><br>
         	<a href="mailto:10623885@polimi.it">Lorenzo Cocchia</a>
       	</div>
 	</footer>

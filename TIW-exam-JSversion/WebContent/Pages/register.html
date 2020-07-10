@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script src="/TIW-exam-JSversion/Scripts/registration.js" charset="utf-8" defer></script>
+<link rel="stylesheet" type="text/css" href="/TIW-exam-JSversion/Styles/style.css">
 <meta charset="UTF-8">
 <title>Register</title>
 </head>
@@ -9,27 +11,53 @@
 	<header>
 		<h1>Transfers site. Cirino, Cocchia exam</h1>
 	</header>
-	
+
 	<main>
-	<h5>Register with the correct credentials!</h5>
-	<form id="registrationForm">
-		<fieldset>
-			<input type="text" name="username" placeholder="Username" required><br>
-			<input type="password" name="password" placeholder="Password" required><br>
-			<input type="password" name="repPassword" placeholder="Repeat Password" required><br>
-			<input type="email" name="email" placeholder="Email" required><br>
-			<button id="registrationButton">Login</button>
-		</fieldset>
-	</form>
+	<div class="container">
+		<h5>Register with the correct credentials!</h5>
+		<form id="registrationForm">
+			<fieldset>
+				<table>
+					<tr>
+						<td>Username:</td>
+						<td><input type="text" name="username" placeholder="Username" required></td>
+						<td><span class="error" id="errorUsername" hidden=true></span></td>
+					</tr>
+					<tr>
+						<td>Insert password:</td>
+						<td><input type="password" name="password" placeholder="Password" required></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Repeat password:</td>
+						<td><input type="password" name="repPassword" placeholder="Repeat Password" required></td>
+						<td><span class="error" id="errorRepPassword"></span></td>
+					</tr>
+					<tr>
+						<td>Desired code</td>
+						<td><input type="text" name="usercode" pattern="\d{4}" maxlength=4 placeholder="Desired Code" required></td>
+						<td><span class="error" id="errorUsercode"></td>
+					</tr>
+					<tr>
+						<td>Insert your email: </td>
+						<td><input type="email" name="email" placeholder="Email" required></td>
+						<td></td>
+					</tr>
+				</table>
+				<button id="registrationButton">Register</button><br>
+				<span class="error" id="errorForm" hidden=true></span>
+			</fieldset>
+		</form>
+	</div>
 	</main>
-	
+
 	<footer>
-		<h5>Login with your credentials, <a href="index.html">click here</a></h5>
 		<div class="container">
-        	<h5>Contact us!</h5>
-       		<a href="mailto:10621933@polimi.it">Duilio Cirino</a>
-        	<a href="mailto:10623885@polimi.it">Lorenzo Cocchia</a>
-      	</div>
+			<h5>Login with your credentials, <a href="/TIW-exam-JSversion/index.html">click here</a></h5>
+    	<h5>Contact us!</h5>
+   		<a href="mailto:10621933@polimi.it">Duilio Cirino</a><br>
+    	<a href="mailto:10623885@polimi.it">Lorenzo Cocchia</a>
+		</div>
 	</footer>
 </body>
 </html>

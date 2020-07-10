@@ -17,18 +17,18 @@ public class TransferDAO {
 		this.con = connection;
 	}
 	
-	public List<Transfer> getTransfersByCAId (int idcurrentAccount) throws SQLException {
+	public List<Transfer> getTransfersByCACode (String CAcode) throws SQLException {
 		String query = "SELECT * FROM transfer WHERE CApayer = ? OR CApayee = ?";
 		try {
 			PreparedStatement pstatement = con.prepareStatement(query);
-			pstatement.setInt(1, idcurrentAccount);
-			pstatement.setInt(2, idcurrentAccount);
+			pstatement.setString(1, CAcode);
+			pstatement.setString(2, CAcode);
 			ResultSet result = pstatement.executeQuery();
 			List<Transfer> returningList = new ArrayList<>();
 			while(result.next()) {
 				Transfer newTransfer = new Transfer();
 				newTransfer.setIdtransfer(result.getInt("idtransfer"));
-				newTransfer.setAmount(result.getInt("amount"));
+				newTransfer.setAmount(result.getFloat("amount"));
 				newTransfer.setDate(result.getDate("date"));
 				newTransfer.setReason(result.getString("reason"));
 				newTransfer.setCApayer(result.getString("CApayer"));
@@ -42,11 +42,11 @@ public class TransferDAO {
 		}
 	}
 	
-	public boolean newTransfer(int amount, String reason, String CApayer, String CApayee) throws SQLException{
+	public boolean newTransfer(float amount, String reason, String CApayer, String CApayee) throws SQLException{
 		String query = "INSERT INTO transfer (amount, reason, CApayer, CApayee) VALUES (?, ?, ?, ?)";
 		try {
 			PreparedStatement pstatement = con.prepareStatement(query);
-			pstatement.setInt(1, amount);
+			pstatement.setFloat(1, amount);
 			pstatement.setString(2,  reason);
 			pstatement.setString(3,  CApayer);
 			pstatement.setString(4,  CApayee);

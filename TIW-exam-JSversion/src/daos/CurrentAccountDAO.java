@@ -25,7 +25,7 @@ public class CurrentAccountDAO {
 			CurrentAccount newCA = new CurrentAccount();
 			if(result.next()) {
 				newCA.setIdcurrentAccount(result.getInt("idcurrentAccount"));
-				newCA.setCheck(result.getInt("check"));
+				newCA.setTotal(result.getFloat("total"));
 				newCA.setCAcode(result.getString("CAcode"));
 			} else {
 				newCA = null;
@@ -46,8 +46,9 @@ public class CurrentAccountDAO {
 			CurrentAccount newCA = new CurrentAccount();
 			if(result.next()) {
 				newCA.setIdcurrentAccount(result.getInt("idcurrentAccount"));
-				newCA.setCheck(result.getInt("check"));
+				newCA.setTotal(result.getFloat("total"));
 				newCA.setCAcode(result.getString("CAcode"));
+				newCA.setIduser(result.getInt("iduser"));
 			} else {
 				newCA = null;
 			}
@@ -69,7 +70,7 @@ public class CurrentAccountDAO {
 				CurrentAccount newCA = new CurrentAccount();
 				newCA.setIdcurrentAccount(result.getInt("idcurrentAccount"));
 				newCA.setCAcode(result.getString("CAcode"));
-				newCA.setCheck(result.getInt("check"));
+				newCA.setTotal(result.getFloat("total"));
 				returningList.add(newCA);
 			}
 			return returningList;
@@ -79,14 +80,14 @@ public class CurrentAccountDAO {
 		}
 	}
 	
-	public int getCheckByCode(String CA) throws SQLException {
+	public float getTotalByCode(String CA) throws SQLException {
 		String query = "SELECT * FROM currentAccount WHERE CAcode = ? ";
 		try {
 			PreparedStatement pstatement = con.prepareStatement(query);
 			pstatement.setString(1, CA);
 			ResultSet result = pstatement.executeQuery();
 			if(result.next()) {
-				return result.getInt("check");
+				return result.getFloat("total");
 			} else {
 				return -1;
 			}
@@ -96,11 +97,11 @@ public class CurrentAccountDAO {
 		}
 	}
 	
-	public boolean updateCheckByAmount(String CA, int amount) throws SQLException {
-		String query = "UPDATE currentAccount SET check = ? WHERE CAcode = ? ";
+	public boolean updateCheckByAmount(String CA, float amount) throws SQLException {
+		String query = "UPDATE currentAccount SET total = ? WHERE CAcode = ? ";
 		try {
 			PreparedStatement pstatement = con.prepareStatement(query);
-			pstatement.setInt(1, amount);
+			pstatement.setFloat(1, amount);
 			pstatement.setString(2, CA);
 			int flag = pstatement.executeUpdate();
 			if(flag == 0) {

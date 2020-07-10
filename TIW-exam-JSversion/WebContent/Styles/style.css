@@ -1,13 +1,13 @@
 body{
-  background: #0D4A6F;
+  background: #1d6f0d;
 }
 
 header, main, footer {
-  min-width: 810px; /* 810/3 = 270 */
+  min-width: 1200px; /* 1200/3 = 400 */
 }
 
 *.container {
-  max-width: 810px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -15,9 +15,21 @@ header, main, footer {
   color: red;
 }
 
-*.container {
-  max-width: 810px;
-  margin: auto;
+*.details {
+  max-width: 800px;
+  float: right;
+}
+
+*.highlight td {
+  background-color: #f0e40a;
+}
+
+*.outoperation td {
+  color: red;
+}
+
+*.inoperation td {
+  color: green;
 }
 
 header, main {
@@ -28,9 +40,22 @@ header, main {
 header h1{
   font-family: 'Denk One', sans-serif;
   float: left;
-  width: 540px;
 }
 
 header nav{
   float: right;
+}
+
+#CAtable {
+  max-width: 400px;
+  float: left;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+  padding: 5px;
+  text-align: left;
 }

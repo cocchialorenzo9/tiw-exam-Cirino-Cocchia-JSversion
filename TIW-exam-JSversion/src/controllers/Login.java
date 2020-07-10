@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 
 import javax.servlet.http.HttpServlet;
@@ -20,6 +21,7 @@ import daos.UserDAO;
 import utils.ConnectionHandler;
 
 @WebServlet("/Login")
+@MultipartConfig
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -32,25 +34,33 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		String usrn = null;
 		String pwd = null;
-		usrn = StringEscapeUtils.escapeJava(request.getParameter("logUsername"));
-		System.out.println("Login:: usern: " + usrn);
-		pwd = StringEscapeUtils.escapeJava(request.getParameter("logPassword"));
+		usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
+		pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty() ) {
+			response.setContentType("plain/text");
+			response.setCharacterEncoding("UTF-8");
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Credentials must be not null or empty");
 			return;
 		}
+		
+		System.out.println("Logging in " + usrn);
+		
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
 		try {
 			user = userDao.checkCredentials(usrn, pwd);
 		} catch (SQLException e) {
+			response.setContentType("plain/text");
+			response.setCharacterEncoding("UTF-8");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Internal server error, retry later");
 			return;
 		}
 
 		if (user == null) {
+			response.setContentType("plain/text");
+			response.setCharacterEncoding("UTF-8");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("Incorrect credentials");
 		} else {

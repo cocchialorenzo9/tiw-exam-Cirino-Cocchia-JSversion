@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 
 @WebFilter(
-		servletNames = {}
+		urlPatterns = {"/GetAllContacts", "/GetAllTransfers", "/GetCurrentAccountsList", "/NewContact", "/NewTransfer"}
 )
 public class SessionFilter implements Filter {
 
@@ -22,9 +22,12 @@ public class SessionFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String loginpath = req.getServletContext().getContextPath() + "/index.html";
+		
+		System.out.println("Filtering ...");
 
 		HttpSession s = req.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
+			System.out.println("This request has no valid session");
 			res.sendRedirect(loginpath);
 			return;
 		}
