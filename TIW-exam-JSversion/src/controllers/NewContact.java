@@ -14,18 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-import com.google.gson.Gson;
-
 import beans.User;
-import beans.Contact;
 import daos.ContactDAO;
 import daos.CurrentAccountDAO;
 import daos.UserDAO;
 import utils.ConnectionHandler;
 
-/**
- * Servlet implementation class NewContact
- */
 @WebServlet("/NewContact")
 @MultipartConfig
 public class NewContact extends HttpServlet {
@@ -47,7 +41,7 @@ public class NewContact extends HttpServlet {
 		
 		CAcode = StringEscapeUtils.escapeJava(request.getParameter("CAcode"));
 		
-		System.out.println("Adding " + CAcode + " as a contact to the session user");
+		//System.out.println("Adding " + CAcode + " as a contact to the session user");
 		
 		if(CAcode == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -62,7 +56,7 @@ public class NewContact extends HttpServlet {
 		int id_ownerCAContact = caDao.getCAByCode(CAcode).getIduser();
 		String usercode_ownerCAContact;
 		
-		System.out.println("His owner is " + id_ownerCAContact);
+		//System.out.println("His owner is " + id_ownerCAContact);
 		
 		try {
 			usercode_ownerCAContact = uDao.getUserById(id_ownerCAContact).getUsercode();
@@ -76,9 +70,6 @@ public class NewContact extends HttpServlet {
 		int iduser = user.getIduser();
 		
 		try {
-			System.out.println(iduser);
-			System.out.println(usercode_ownerCAContact);
-			System.out.println(CAcode);
 			contactDao.newUsersContact(iduser, usercode_ownerCAContact, CAcode);
 		} catch (SQLException e) {
 			e.printStackTrace();

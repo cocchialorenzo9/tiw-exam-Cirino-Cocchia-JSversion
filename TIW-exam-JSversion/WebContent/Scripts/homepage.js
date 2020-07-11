@@ -59,35 +59,8 @@
 
                     contacts.retrieveContacts();
 
-                    currentAccountsList.autoclick();
+                    currentAccountsList.autoclick(1);
 
-                    /*
-                    if(_response.getResponseHeader("Content-Type") === "application/json") {
-                        var caList = JSON.parse(_response.responseText);
-                        var caTable = $("#CATable");
-
-                        for(let i = 0; i < caList.length; i++) {
-                            var caId = caList[i].idcurrentAccount;
-                            var newRow = $("<tr value='" + caId + "'></tr>");
-                            var data1 = $("<td></td>");
-                            var data2 = $("<td></td>");
-                            var caCode = caList[i].CAcode;
-                            var caTotal = caList[i].CAtotal;
-                            $(data1).html(caCode);
-                            $(data2).appendTo(caTotal);
-                            $(data1).appendTo(newRow);
-                            $(data2).appendTo(newRow);
-                            $(newRow).appendTo(caTable);
-                        }
-
-                        $(caTable).show(300);
-
-                        var registrator = new CARegistrator();
-                        registrator.registerButtons();
-
-                    } else {
-                      console.error("GetCurrentAccountsList returned no JSON type");
-                    }*/
                 },
                 error: function(xhr, status, error) {
                     console.error("ERROR GetCurrentAccountsList returned an error");
@@ -99,15 +72,20 @@
 
         this.update = function(_idCA) {
             console.log("updating ca list");
+            console.log(_idCA);
 
             $.ajax({
                 type: "GET",
                 url: "/TIW-exam-JSversion/GetCurrentAccount",
-                data: {idCA: _idCA},
+                data: {
+                    idCA: _idCA
+                },
                 success: function(result, status, xhr){
                     console.log("SUCCESS GetCurrentAccount");
+                    console.log(result);
 
                     $("#CATable tr[value='" + result.idcurrentAccount +"'] td:eq(1)").html(result.total);
+
                 },
                 error: function(xhr, status, error) {
                     console.error("ERROR GetCurrentAccount:: " + xhr.responseText);
@@ -115,10 +93,11 @@
             });
         }
 
-        this.autoclick = function() {
+        this.autoclick = function(_numRowToClick) {
             console.log("trying to autoclick");
-            console.log($("#CATable tr:eq(1)"));
-            $("#CATable tr:eq(1)").click();
+            console.log($("#CATable tr:eq("+ _numRowToClick + ")"));
+            //$("#CATable tr:eq(1)").click();
+            $("#CATable tr:eq("+ _numRowToClick + ")").click();
         }
       }
 
@@ -129,7 +108,9 @@
             console.log("Id to send: " + _idCA);
 
             $("#transfersTable").hide(300);
-            $("#transfersTable").html("");
+            //match only from children with index greater than 0. This means that
+            //only the header row will never be deleted
+            $("#transfersTable tr:gt(0)").remove();
 
             this.highlightCARow(_idCA);
 
@@ -190,54 +171,8 @@
 
                       }
 
-
                         newTransferForm.update(_idCA);
-                    /*
-                    if(_req.getResponseHeader("Content-Type") === "application/json"){
 
-                      var transfers = JSON.parse(_req.responseText);
-
-                      if(transfers.length == 0) {
-                          $("#transfersTable").hide();
-                          $("#noTransfersMessage").show(300);
-
-                      } else {
-                          $("#noTransfersMessage").hide();
-                          var transfersTable = $("#transfersTable");
-
-                          for(let j = 0; j < transfers.length; j++) {
-                              var newRow = $("<tr></tr>");
-                              var tdDate = $("<td></td>");
-                              var tdAmount = $("<td></td>");
-                              var tdReason = $("<td></td>");
-                              var tdRole = $("<td></td>");
-
-                              $(tdDate).html(transfers[i].date);
-                              $(tdAmount).html(transfers[i].amount);
-                              $(tdReason).html(transfers[i].reason);
-
-                              if(transfers[i].CApayer == _idCA) {
-                                  $(tdRole).html("payer");
-                              } else {
-                                  $(tdRole).html("payee");
-                              }
-
-                              $(tdData).appendTo(newRow);
-                              $(tdAmount).appendTo(newRow);
-                              $(tdReason).appendTo(newRow);
-                              $(tdRole).appendTo(newRow);
-
-                              $(newRow).appendTo(transfersTable);
-                          }
-
-                          $("#transfersTable").show(300);
-                      }
-
-                      newTransferForm.update(_idCA);
-
-                    } else {
-                        console.log("ERROR GetAllTransfers did not return a JSON type");
-                    }*/
                 },
                 error: function(xhr, status, error) {
                     console.error("ERROR GetAllTransfers" + xhr.responseText);
@@ -299,20 +234,7 @@
                           contacts.contacts.push(newContact);
                       }
 
-                      /*
-                      if(_req.getResponseHeader("Content-Type") == "application/json") {
-
-                          this.contacts = new Array();
-
-                          var allContacts = JSON.parse(_req.responseText);
-                          for(let i = 0; i < allContacts.length; i++) {
-                              var newContact = new Contact(allContacts[i].usercode, allContacts[i].CAcode);
-                              this.contacts.push(newContact);
-                          }
-
-                      } else {
-                          console.error("ERROR GetAllContacts:: no JSON response");
-                      }*/
+                      console.log("Finished success getAllContacts");
                   },
                   error: function(xhr, status, error) {
                       console.error("ERROR GetAllContacts:: error in the request");
@@ -365,13 +287,16 @@
       //returns index of the contact insert so far
       function checkPresenceOnContact() {
           var inputSoFar = $("input[name=userCodePayee]").attr("value");
+          console.log("Checking presence on contacts");
+
+          if(inputSoFar.length != 1){
+              return -1;
+          }
 
           for(let i = 0; i < contacts.contacts.length; i++) {
 
               let thisUsercode = contacts.contacts[i].usercode;
-              console.log(thisUsercode);
               console.log(thisUsercode.substr(0, inputSoFar.length));
-              console.log(inputSoFar == thisUsercode.substr(0, inputSoFar.length));
               if(inputSoFar == thisUsercode.substr(0, inputSoFar.length)) {
                 console.log(i);
                 return i;
@@ -438,32 +363,19 @@
                                     }
                                 }
 
-                                transfersList.show(ca.idcurrentAccount);
+                                var caid = $("#CATable tr.highlight").attr("value");
+                                console.log("Highlighted id was: ");
+                                console.log(caid);
+
+                                transfersList.show(caid);
 
                                 //currentAccountsList.show();
 
                                 //TODO: check cacode and confirm
-                                var cacode = $("#CATable tr.highlight td:eq(0)").html();
-                                currentAccountsList.update(cacode);
+                                console.log("Terminating newTransfer: updating currentAccountsList with caid : ");
+                                console.log(caid);
+                                currentAccountsList.update(caid);
 
-                                /*
-                                if(_req.getResponseHeader("Content-Type") == "application/json") {
-
-                                    var ca = JSON.parse(_req.responseText);
-
-                                    var currentContacts = contacts.getContacts();
-
-                                    if(!isCACodeInContacts(currentContacts, ca.CACode)){
-                                        if(confirm("Do you want to save this contact?")){
-                                            contacts.addContact(ca.CAcode);
-                                        }
-                                    }
-
-                                    transfersList.show(ca.idcurrentAccount);
-
-                                } else {
-                                    console.error("NewTransfer did not return JSON data");
-                                }*/
 
                           },
                           error:  function(xhr, status, error) {
@@ -485,11 +397,17 @@
   }); //end of ready
 
   function isCACodeInContacts(_contactsArray, _CACode){
+      console.log("checking contacts: ");
+      console.log(_contactsArray);
+      console.log(_CACode);
       for(let i = 0; i < _contactsArray.length; i++) {
           if(_contactsArray[i].CACode == _CACode) {
               return true;
           }
       }
+      console.log("FALSE");
+      console.log(_contactsArray);
+      console.log(_CACode);
       return false;
   }
 
