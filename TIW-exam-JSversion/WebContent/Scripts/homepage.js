@@ -111,6 +111,7 @@
             //match only from children with index greater than 0. This means that
             //only the header row will never be deleted
             $("#transfersTable tr:gt(0)").remove();
+            //$("#transfersTable").html("");
 
             this.highlightCARow(_idCA);
 
@@ -136,6 +137,7 @@
                     } else {
                         $("#noTransfersMessage").hide();
                         var transfersTable = $("#transfersTable");
+                        var cacode = $("#CATable tr.highlight td:eq(0)").html();
 
                         for(let j = 0; j < transfers.length; j++) {
                             var newRow = $("<tr></tr>");
@@ -147,7 +149,6 @@
                             $(tdDate).html(transfers[j].date);
                             $(tdReason).html(transfers[j].reason);
 
-                            var cacode = $("#CATable tr.highlight td:eq(0)").html();
 
                             if(transfers[j].CApayer == cacode) {
                                 $(tdDeal).html(transfers[j].CApayee);
