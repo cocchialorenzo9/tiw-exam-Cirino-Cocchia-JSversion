@@ -2,6 +2,10 @@
 
   $(document).ready(function() {
 
+    if(sessionStorage.getItem("iduser") == null) {
+        window.location.href = "/TIW-exam-JSversion/"; //does not resend well user
+    }
+
       var personalMessage = new PersonalMessage(sessionStorage.getItem("username"));
       var currentAccountsList = new CurrentAccountsList();
       var transfersList = new TransfersList();
@@ -32,7 +36,14 @@
                 type: "GET",
                 url: "/TIW-exam-JSversion/GetCurrentAccountsList",
                 data: $(iduser).serialize(),
+                ifModified: true,
                 success: function(result, status, xhr) {
+                    console.log(result);
+                    console.log(status);
+                    console.log(xhr.status);
+                    if(result == undefined) { //304 by server
+                        return;
+                    }
                     console.log("SUCCESS GetCurrentAccountsList");
                     console.log(result);
 
