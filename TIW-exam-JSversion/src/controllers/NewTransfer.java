@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.translate.UnicodeUnescaper;
 
 import com.google.gson.Gson;
 

@@ -73,10 +73,11 @@
       function usernameIsOk(_data) {
           console.log("Username did not exist, continuing registration");
           console.log("SUCCESS:: username request");
-          checkUsercode();
+          //checkUsercode();
+          sendForm();
       }
 
-      function checkUsercode() {
+      /*function checkUsercode() {
           console.log("Checking usercode...");
           $("#errorUsercode").hide(300);
 
@@ -90,7 +91,7 @@
               success: usercodeIsOk,
               error: showUsercodeError
           });
-      }
+      }*/
 
       function showUsercodeError(_xmlHttpRequest) {
           var message = _xmlHttpRequest.responseText;

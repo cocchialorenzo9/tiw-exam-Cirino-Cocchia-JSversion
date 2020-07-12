@@ -40,7 +40,7 @@ public class UserDAO {
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setString(1, username);
 			pstatement.setString(2,  pwd);
-			pstatement.setString(3,  pwd);
+			pstatement.setString(3,  usercode);
 			pstatement.setString(4, email);
 			int flag = 0;
 			try {
