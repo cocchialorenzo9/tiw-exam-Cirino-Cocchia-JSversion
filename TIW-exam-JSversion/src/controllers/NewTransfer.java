@@ -156,7 +156,7 @@ public class NewTransfer extends HttpServlet {
 				payee = caDao.getCAByCode(CApayee);
 				
 				if(payer == null || payee == null) {
-					errorMessage = "You inserted an invalid code";
+					errorMessage = "You inserted an invalid current account code";
 					//response.getWriter().println("You inserted an invalid code");
 					throw new IllegalArgumentException();
 				} else if(payer.getTotal() < amount) {

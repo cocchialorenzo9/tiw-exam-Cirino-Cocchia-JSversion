@@ -47,6 +47,14 @@
                     console.log("SUCCESS GetCurrentAccountsList");
                     console.log(result);
 
+                    if(result.length == 0) {
+                        $("#generalError").html("You do not own any current acocunt, contact an admin to register a new current account");
+                        $("#generalError").show(300);
+                        return;
+                    } else {
+                        $("#generalError").hide();
+                    }
+
                     var caTable = $("#CATable");
 
                     for(let i = 0; i < result.length; i++) {

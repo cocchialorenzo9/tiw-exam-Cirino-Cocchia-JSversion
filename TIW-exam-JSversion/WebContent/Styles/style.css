@@ -51,7 +51,7 @@ header nav{
   float: left;
 }
 
-table, th, td {
+#CATable th, #CATable td {
     border: 1px solid black;
 }
 

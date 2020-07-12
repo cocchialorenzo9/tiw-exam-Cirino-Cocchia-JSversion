@@ -1,6 +1,7 @@
 (function() {
     $(document).ready(function(){
 
+
       setCheckValidity();
       registerRegistrationButton();
 
@@ -10,9 +11,16 @@
 // username check -> usercode check -> form sent
               event.preventDefault();
               console.log("event prevented default");
+              $("#errorForm").hide(300);
 
               if($("#registrationForm")[0].checkValidity()){
-                  checkUsername();
+                  var rPass = $("input[name=repPassword]")[0];
+                  if(rPass.checkValidity()){
+                      checkUsername();
+                  } else {
+                    $("#errorForm").html("The two passwords must be the same");
+                    $("#errorForm").show(300);
+                  }
               } else {
                   $("#registrationForm")[0].reportValidity();
               }
@@ -25,7 +33,8 @@
           $("input[name=repPassword]")[0].checkValidity = function () {
               var password = $("input[name=password]").val();
               var repPassword = $("input[name=repPassword]").val();
-              console.log("returning " + password === repPassword + "from checkValidity");
+              console.log("returning from repPassword checkValidity");
+              console.log(password === repPassword);
               return password === repPassword;
           };
 
@@ -40,6 +49,9 @@
               var oldStyle = document.querySelectorAll("input[name=username]")[0].style;
               document.querySelectorAll("input[name=repPassword]")[0].style = oldStyle;
               $("#errorRepPassword").hide(300);
+              if($("#errorForm").attr("style") == "display: inline;") {
+                  $("#errorForm").hide(300);
+              }
             }
           });
 
@@ -126,6 +138,7 @@
       function registrationSuccess(data) {
           $("#registrationForm")[0].reset();
           console.log("SUCCESS: ", data);
+          alert("Your registration have been successful! Now access with your credentials");
           window.location.href = "/TIW-exam-JSversion/index.html";
       }
 
