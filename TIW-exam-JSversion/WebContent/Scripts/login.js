@@ -1,6 +1,7 @@
 (function(){
     $(document).ready(function(){
 
+      sessionStorage.clear();
       registerLoginButton();
 
       function registerLoginButton() {
@@ -44,21 +45,6 @@
           console.log("Set on session storage: id=" + sessionStorage.getItem("iduser") +
         + " username=" + sessionStorage.getItem("username"));
           window.location.href = "Pages/homepage.html";
-
-          /* //this code were made in order to control wat was sent by user
-          var response_type = xhr.getResponseHeader("Content-Type");
-          if(response_type === "application/json"){
-
-              var user = JSON.parse(xhr.responseText);
-
-              sessionStorage.setItem('iduser', user.iduser);
-              sessionStorage.setItem('username', user.username);
-              window.location.href = "Pages/homepage.html";
-
-          } else {
-              console.error("fatal error, server response is not in JSON format");
-          }
-          */
 
       }
 
