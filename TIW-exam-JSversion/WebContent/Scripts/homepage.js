@@ -48,7 +48,7 @@
                     console.log(result);
 
                     if(result.length == 0) {
-                        $("#generalError").html("You do not own any current acocunt, contact an admin to register a new current account");
+                        $("#generalError").html("You do not own any current account, contact an admin to register a new current account");
                         $("#generalError").show(300);
                         return;
                     } else {
@@ -284,8 +284,8 @@
               });
           }
       }
-
-      function ContactsRegister() {
+      
+      /*function ContactsRegister() {
           this.registerContactsPrevision = function() {
             $("input[name=userCodePayee]").bind("keyup", function() {
                 console.log("key pressed on userCodePayee");
@@ -302,28 +302,76 @@
                 }
             });
           }
+      }*/
+
+      function ContactsRegister(){
+          this.registerContactsPrevision = function () {
+              $("input[name=userCodePayee]").bind("keyup", function () {
+            	  
+                  let compatibleContacts = checkContactList();
+
+                  var contactList = $("#ContactList");
+                  
+
+                  if(compatibleContacts.length != 0){
+                	  
+                	  console.log("This correspondencies were found /n" + compatibleContacts);
+                	  
+                	  console.log("Populating Contact List");
+                	  
+                	  $("#ContactList tr:gt(1)").remove();
+
+                      for(let i = 0; i < compatibleContacts.length; i++){
+                          var usercode = compatibleContacts[i].usercode;
+                          var newRow = $("<tr value='" + usercode + "'></tr>");
+                          var data1 = $("<td></td>");
+                          var data2 = $("<td></td>");
+                          var CACode = compatibleContacts[i].CAcode;
+                          $(data1).html(usercode);
+                          $(data2).html(CACode);
+                          $(data1).appendTo(newRow);
+                          $(data2).appendTo(newRow);
+                          $(newRow).appendTo(contactList);
+                      }
+
+                      $("#ContactList tr").click(function () {
+                    	  $("#ContactList tr:gt(1)").attr("class", "");
+                    	  $(this).attr("class", "highlight");
+                    	  $("input[name=userCodePayee]").attr("value", $(this).children('td:eq(0)').text());
+                          $("input[name=CApayee]").attr("value", $(this).children('td:eq(1)').text());
+                      })
+                      
+                      contactList.show(300);
+                      
+                      $("#ContactList tr:eq(2)").click();
+
+                  } else {
+                	  console.log("No compatible contacts were found!");
+                      contactList.hide(300);
+
+                  }
+              })
+          }          
       }
 
-      //returns index of the contact insert so far
-      function checkPresenceOnContact() {
+      function checkContactList() {
           var inputSoFar = $("input[name=userCodePayee]").attr("value");
+          var compatibleContacts = new Array();
           console.log("Checking presence on contacts");
 
-          if(inputSoFar.length != 1){
-              return -1;
+          if(inputSoFar.length < 1){
+              return compatibleContacts;
           }
 
-          for(let i = 0; i < contacts.contacts.length; i++) {
-
+          for(let i = 0; i < contacts.contacts.length; i++){
+        	  
               let thisUsercode = contacts.contacts[i].usercode;
-              console.log(thisUsercode.substr(0, inputSoFar.length));
-              if(inputSoFar == thisUsercode.substr(0, inputSoFar.length)) {
-                console.log(i);
-                return i;
+              if(inputSoFar == thisUsercode.substr(0, inputSoFar.length)){
+                  compatibleContacts.push(contacts.contacts[i]);
               }
           }
 
-          return -1;
+          return compatibleContacts;
       }
 
       function Contact(_usercodeContact, _CAcodeContact) {

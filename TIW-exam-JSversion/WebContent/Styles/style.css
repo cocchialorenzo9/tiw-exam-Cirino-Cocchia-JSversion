@@ -46,6 +46,15 @@ header nav{
   float: right;
 }
 
+#ContactList {
+  max-width: 400px;
+  float: left;
+}
+
+#ContactList th, #ContactList td {
+    border: 1px solid black;
+}
+
 #CAtable {
   max-width: 400px;
   float: left;
