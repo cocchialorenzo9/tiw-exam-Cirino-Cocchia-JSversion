@@ -248,6 +248,8 @@
                   success: function(result, status, xhr) {
                       console.log("SUCCESS GetAllContacts");
 
+                      contacts.contacts = new Array();
+
                       var allContacts = result;
                       for(let i = 0; i < allContacts.length; i++) {
                           var newContact = new Contact(allContacts[i].usercode, allContacts[i].CAcode);
@@ -277,6 +279,7 @@
                       contacts.retrieveContacts();
                       console.log("pushed contacts?");
                       console.log(contacts.contacts);
+                      $("#ContactList").hide(300);
                   },
                   error: function(xhr, status, error) {
                       console.error("ERROR NewContact:: " + xhr.responseText);
@@ -284,7 +287,7 @@
               });
           }
       }
-      
+
       /*function ContactsRegister() {
           this.registerContactsPrevision = function() {
             $("input[name=userCodePayee]").bind("keyup", function() {
@@ -307,18 +310,18 @@
       function ContactsRegister(){
           this.registerContactsPrevision = function () {
               $("input[name=userCodePayee]").bind("keyup", function () {
-            	  
+
                   let compatibleContacts = checkContactList();
 
                   var contactList = $("#ContactList");
-                  
+
 
                   if(compatibleContacts.length != 0){
-                	  
+
                 	  console.log("This correspondencies were found /n" + compatibleContacts);
-                	  
+
                 	  console.log("Populating Contact List");
-                	  
+
                 	  $("#ContactList tr:gt(1)").remove();
 
                       for(let i = 0; i < compatibleContacts.length; i++){
@@ -340,9 +343,9 @@
                     	  $("input[name=userCodePayee]").attr("value", $(this).children('td:eq(0)').text());
                           $("input[name=CApayee]").attr("value", $(this).children('td:eq(1)').text());
                       })
-                      
+
                       contactList.show(300);
-                      
+
                       $("#ContactList tr:eq(2)").click();
 
                   } else {
@@ -351,7 +354,7 @@
 
                   }
               })
-          }          
+          }
       }
 
       function checkContactList() {
@@ -364,7 +367,7 @@
           }
 
           for(let i = 0; i < contacts.contacts.length; i++){
-        	  
+
               let thisUsercode = contacts.contacts[i].usercode;
               if(inputSoFar == thisUsercode.substr(0, inputSoFar.length)){
                   compatibleContacts.push(contacts.contacts[i]);
@@ -422,7 +425,7 @@
 
                                 var ca = result;
 
-                                var currentContacts = contacts.getContacts();
+                                var currentContacts = contacts.getContacts().contacts;
 
                                 if(!isCACodeInContacts(currentContacts, ca.CAcode)){
                                     if(confirm("Do you want to save this contact?")){
@@ -469,7 +472,7 @@
       console.log(_contactsArray);
       console.log(_CACode);
       for(let i = 0; i < _contactsArray.length; i++) {
-          if(_contactsArray[i].CACode == _CACode) {
+          if(_contactsArray[i].CAcode == _CACode) {
               return true;
           }
       }

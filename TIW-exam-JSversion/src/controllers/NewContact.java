@@ -63,14 +63,20 @@ public class NewContact extends HttpServlet {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("usercode parameter is not retrievable, contact not addable");
+			response.getWriter().println("Usercode parameter is not retrievable, contact not addable");
 			return;
 		}
 		
 		int iduser = user.getIduser();
 		
 		try {
-			contactDao.newUsersContact(iduser, usercode_ownerCAContact, CAcode);
+			if(!contactDao.isUsersContactPresentYet(iduser, usercode_ownerCAContact, CAcode)) {
+				contactDao.newUsersContact(iduser, usercode_ownerCAContact, CAcode);
+			} else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("This contact was yet in the list");
+				return;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

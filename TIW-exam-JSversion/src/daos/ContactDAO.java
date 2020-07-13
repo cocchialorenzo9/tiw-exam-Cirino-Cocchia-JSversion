@@ -61,4 +61,19 @@ public class ContactDAO {
 			throw new SQLException();
 		}
 	}
+	
+	public boolean isUsersContactPresentYet(int iduser, String usercodeContact, String CAcodeContact) throws SQLException {
+		String query = "SELECT * FROM contact WHERE iduser = ? AND usercode = ? AND CAcode = ?";
+		try {
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, iduser);
+			pstatement.setString(2,  usercodeContact);
+			pstatement.setString(3, CAcodeContact);
+			ResultSet result = pstatement.executeQuery();
+			return result.isBeforeFirst();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException();
+		}
+	}
 }
